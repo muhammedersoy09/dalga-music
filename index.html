@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dalga Music</title>
+<style>
+:root{--bg:#0D0F13;--sf:#181B22;--ink:#F1F3F6;--mute:#9099A8;--line:#262A33;--ac:#2BD46A;--acink:#06140B;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{max-width:560px;margin:0 auto;padding:20px 16px 150px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}.brand b{font-size:1.6rem;letter-spacing:-.02em}
+.mute{color:var(--mute);font-size:.9rem}
+.btn{background:var(--ac);color:var(--acink);font-weight:700;padding:14px 26px;border-radius:999px;margin:14px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:6px 0 12px}
+.chip{flex:none;padding:10px 16px;border:1px solid var(--line);background:var(--sf);border-radius:999px}
+input{width:100%;font:inherit;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--sf);color:var(--ink)}
+.row{display:flex;align-items:center;gap:12px;padding:8px 4px;border-radius:12px;cursor:pointer}
+.row img,.row .ph{width:52px;height:52px;border-radius:8px;flex:none;background:var(--line)}
+.meta{flex:1;min-width:0}.meta b,.meta span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#msg{margin:10px 0;padding:10px 12px;border-radius:10px;background:var(--sf);display:none}
+#bar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);padding:8px 10px calc(env(safe-area-inset-bottom,0px) + 8px)}
+.np{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--line);border-radius:14px;padding:8px}
+.np img,.np .ph{width:44px;height:44px;border-radius:8px;flex:none;background:var(--line)}
+.np button{width:44px;height:44px;font-size:1.2rem;border-radius:50%}
+.np .pp{background:var(--ink);color:var(--bg)}
+</style>
+</head>
+<body>
+<main>
+<div class="brand"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#2BD46A"/><path d="M6 22c4-8 7-8 11 0s7 8 11 0 4-6 6-6" fill="none" stroke="#06140B" stroke-width="3.2" stroke-linecap="round"/></svg><b>Dalga Music</b></div>
+<p class="mute" id="hello">Spotify şarkılarını buradan ara ve Spotify uygulamanda çal.</p>
+<div id="msg" role="status"></div>
+<div id="out"></div>
+</main>
+<div id="bar"></div>
+<script>
+var CID="5a1d2111eca849cdbcc19d193b925148";
+var RED="https://muhammedersoy09.github.io/dalga-music/";
+var SCOPE="user-read-playback-state user-modify-playback-state";
+var ARTISTS=["Wegh","Motive","Uzi","Heijan","Muti","Kava"];
+var state={};
+function $(i){return document.getElementById(i)}
+function note(t){var m=$("msg");m.textContent=t||"";m.style.display=t?"block":"none"}
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function rand(n){var a=new Uint8Array(n);crypto.getRandomValues(a);return Array.prototype.map.call(a,function(x){return("0"+x.toString(16)).slice(-2)}).join("").slice(0,n)}
+function b64(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+async function login(){
+  var v=rand(96);localStorage.setItem("dm_v",v);
+  var h=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));
+  location.href="https://accounts.spotify.co
