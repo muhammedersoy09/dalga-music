@@ -36,18 +36,6 @@ input{width:100%;font:inherit;padding:14px 16px;border-radius:12px;border:1.5px 
 <div id="out"></div>
 </main>
 <div id="bar"></div>
-<script>
-var CID="5a1d2111eca849cdbcc19d193b925148";
-var RED="https://muhammedersoy09.github.io/dalga-music/";
-var SCOPE="user-read-playback-state user-modify-playback-state";
-var ARTISTS=["Wegh","Motive","Uzi","Heijan","Muti","Kava"];
-var state={};
-function $(i){return document.getElementById(i)}
-function note(t){var m=$("msg");m.textContent=t||"";m.style.display=t?"block":"none"}
-function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
-function rand(n){var a=new Uint8Array(n);crypto.getRandomValues(a);return Array.prototype.map.call(a,function(x){return("0"+x.toString(16)).slice(-2)}).join("").slice(0,n)}
-function b64(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
-async function login(){
-  var v=rand(96);localStorage.setItem("dm_v",v);
-  var h=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));
-  location.href="https://accounts.spotify.co
+<script src="app.js"></script>
+</body>
+</html>
