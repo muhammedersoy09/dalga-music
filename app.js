@@ -70,35 +70,8 @@ async function search(q){
   }catch(e){res.textContent="";note("Arama çalışmadı: "+e.message)}
 }
 async function playUri(u){
-  note("");
-  try{await api("/me/player/play",{method:"PUT",body:JSON.stringify({uris:[u]})});setTimeout(poll,800)}
-  catch(e){note(/device/i.test(e.message)?"Çalacak cihaz bulunamadı. Spotify uygulamasını aç, herhangi bir şarkıyı bir saniye çalıp durdur, sonra tekrar dene.":"Çalınamadı: "+e.message)}
-}
-async function ctl(act){
-  try{
-    if(act==="pp")await api("/me/player/"+(state.playing?"pause":"play"),{method:"PUT"});
-    else await api("/me/player/"+act,{method:"POST"});
-    setTimeout(poll,600);
-  }catch(e){note("Komut gönderilemedi: "+e.message)}
-}
-async function poll(){
-  try{
-    var j=await api("/me/player");var bar=$("bar");bar.textContent="";
-    if(!j.item){return}
-    state.playing=j.is_playing;
-    var np=el("div","np"),imgs=j.item.album&&j.item.album.images;
-    if(imgs&&imgs.length){var im=el("img");im.src=imgs[imgs.length-1].url;im.alt="";np.appendChild(im)}else np.appendChild(el("div","ph"));
-    var m=el("div","meta");m.appendChild(el("b","",j.item.name));m.appendChild(el("span","mute",j.item.artists.map(function(a){return a.name}).join(", ")));np.appendChild(m);
-    [["previous","⏮",""],["pp",j.is_playing?"⏸":"▶","pp"],["next","⏭",""]].forEach(function(x){var b=el("button",x[2],x[1]);b.setAttribute("aria-label",x[0]);b.onclick=function(){ctl(x[0])};np.appendChild(b)});
-    bar.appendChild(np);
-  }catch(e){}
-}
-(async function(){
-  var q=new URLSearchParams(location.search);
-  if(q.get("code")){
-    var ok=await tokenReq({grant_type:"authorization_code",code:q.get("code"),redirect_uri:RED,code_verifier:localStorage.getItem("dm_v")||""});
-    history.replaceState({},"",RED);
-    if(!ok)note("Giriş tamamlanamadı. Tekrar dene.");
-  }else if(q.get("error")){history.replaceState({},"",RED);note("Giriş iptal edildi.")}
-  if(await tok()){showApp();setInterval(poll,4000)}else showLogin();
-})();
+  note("Gönderiliyor…");
+  var devs=null,dev=null;
+  try{var d=await api("/me/player/devices");devs=d.devices||[]}catch(e){devs=null}
+  if(devs){
+    i
